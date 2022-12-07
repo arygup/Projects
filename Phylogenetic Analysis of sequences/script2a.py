@@ -1,0 +1,67 @@
+from alignment.sequence import Sequence
+from alignment.vocabulary import Vocabulary
+from alignment.sequencealigner import SimpleScoring, GlobalSequenceAligner
+
+from Bio import pairwise2
+#from Bio import SeqIO
+from Bio.SubsMat.MatrixInfo import blosum62
+#from Bio import AlignI0
+#from Bio.Align import MultipleSeqAlignment
+from Bio.Seq import Seq
+#from Bio.SeqRecord import SeqRecord 
+#from Bio.Alphabet import generic_protein
+from Bio import Align
+from Bio.SubsMat import MatrixInfo as matlist
+
+aligner = Align.PairwiseAligner(match_score = 1.0)
+
+
+#10 input Nucleotide
+
+n1 = "MALWIRSLPLLALLVFSGPGTSYAAANQHLCGSHLVEALYLVCGERGFFYSPKARRDVEQPLVSSPLRGEAGVLPFQQEEYEKVKRGIVEQCCHNTCSLYQLENYCN"
+n2 = "MALWMRLLPLLALLALWAPAPTRAFVNQHLCGSHLVEALYLVCGERGFFYTPKARREVEDLQVRDVELAGAPGEGGLQPLALEGALQKRGIVEQCCTSICSLYQLENYCN"
+n3 = "MAVWLQAGALLFLLAVSSVNANAGAPQHLCGSHLVDALYLVCGPTGFFYNPKRDVDPLMGFLPPKSAQETEVADFAFKDHAEVIRKRGIVEQCCHKPCSIFELQNYCN"
+n4 = "MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTPKTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQLENYCN"
+n5 = "MALWMRFLPLLALLVLWEPKPAQAFVKQHLCGPHLVEALYLVCGERGFFYTPKSRREVEDPQVPQLELGGGPEAGDLQTLALEVARQKRGIVDQCCTSICSLYQLENYCN"
+n6 = "MALWTRLLPLLALLALWAPAPAQAFVNQHLCGSHLVEALYLVCGERGFFYTPKARREAENPQAGAVELGGGLGGLQALALEGPPQKRGIVEQCCTSICSLYQLENYCN"
+n7 = "MALWTRLAPLLALLALWAPAPARAFVNQHLCGSHLVEALYLVCGERGFFYTPKARREVEGPQVGALELAGGPGAGGLEGPPQKRGIVEQCCASVCSLYQLENYCN"
+n8 = "MALWMRLLPLLVLLALWGPDPASAFVNQHLCGSHLVEALYLVCGERGFFYTPKTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQLENYCN"
+n9 = "MAPWMHLLTVLALLALWGPNSVQAYSSQHLCGSNLVEALYMTCGRSGFYRPHDRRELEDLQVEQAELGLEAGGLQPSALEMILQKRGIVDQCCNNICTFNQLQNYCNVP"
+n10 = "MASLAALLPLLALLVLCRLDPAQAFVNQHLCGSHLVEALYLVCGERGFFYTPKSRREVEELQVGQAELGGGPGAGGLQPSALELALQKRGIVEQCCTSICSLYQLENYCN"
+
+n = []
+n.append(n1)
+n.append(n2)
+n.append(n3)
+n.append(n4)
+n.append(n5)
+n.append(n6)
+n.append(n7)
+n.append(n8)
+n.append(n9)
+n.append(n10)
+
+
+dm = []
+f = open('Pdist.txt', 'w')
+
+matrix = matlist.blosum62
+
+for i in range(0, 10):
+    dl = []
+    for j in range(0, 10):
+        if i == j:
+            break
+        x = aligner.score(n[i], n[j])
+        al = pairwise2.align.globalxx(n[i], n[j])
+        #al = pairwise2.align.globaldx(n[i], n[j], matrix)
+        y = (al[0][4] - al[0].score)/al[0][4]
+        f.write(str(y))
+        f.write(" ")
+        #print(x)
+        dl.append(x)
+    dm.append(dl)
+    f.write("\n")
+
+
+
